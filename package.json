@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/pns1681999/pnsCoinNode/issues"
   },
-  "homepage": "https://github.com/pns1681999/pnsCoinNode#readme"
+  "homepage": "https://github.com/pns1681999/pnsCoinNode#readme",
+  "dependencies": {
+    "hex-to-binary": "^1.0.1"
+  }
 }
