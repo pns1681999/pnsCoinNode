@@ -23,11 +23,13 @@
   "homepage": "https://github.com/pns1681999/pnsCoinNode#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "elliptic": "^6.5.4",
     "express": "^4.17.1",
     "hex-to-binary": "^1.0.1",
     "pubnub": "^4.32.0",
     "redis": "^3.1.2",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
