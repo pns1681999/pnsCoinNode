@@ -6,7 +6,7 @@ const GENESIS_DATA = {
   hash: 'genesis-hash',
   difficulty: INITIAL_DIFFICULTY,
   nonce: 0,
-  data: 'PNS Coin - Non-profit'
+  data: []
 }
 
 const STARTING_BALANCE = 1000;

@@ -109,5 +109,42 @@ class Blockchain {
     }
     return true;
   }
+  static transactionHistory(chain, address) {
+    let result = [];
+    for(let i = chain.length - 1; i > 0; i--) {
+      const block = chain[i]
+      for (let transaction of block.data) {
+        if (transaction.input.address === address) {
+          console.log(Object.keys(transaction.outputMap))
+          Object.keys(transaction.outputMap).forEach(item => {
+            if (item !== address) {
+              result.push({
+                id: transaction.id,
+                timestamp: transaction.input.timestamp,
+                from: transaction.input.address,
+                to: item,
+                block: i,
+                amount: transaction.outputMap[item],
+              })
+            }
+          })
+        } else {
+          Object.keys(transaction.outputMap).forEach(item => {
+            if (item === address) {
+              result.push({
+                id: transaction.id,
+                timestamp: transaction.input.timestamp,
+                from: transaction.input.address,
+                to: item,
+                block: i,
+                amount: transaction.outputMap[item],
+              })
+            }
+          })
+        }
+      }
+    }
+    return result;
+  }
 }
 module.exports = Blockchain;

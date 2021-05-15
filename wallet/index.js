@@ -3,21 +3,25 @@ const {STARTING_BALANCE} = require('../config');
 const {ec, cryptoHash} = require('../util');
 
 class Wallet {
-  constructor() {
-    this.balance = STARTING_BALANCE;
-    this.keyPair = ec.genKeyPair();
+  constructor(keyPair) {
+    this.keyPair = keyPair || ec.genKeyPair();
     this.publicKey = this.keyPair.getPublic().encode('hex');
+    this.balance = STARTING_BALANCE;
   }
   sign(data) {
     return this.keyPair.sign(cryptoHash(data))
   }
 
+  updateBalance(chain) {
+    this.balance = Wallet.calculateBalance({
+      chain,
+      address: this.publicKey
+    })
+  }
+
   createTransaction({recipient, amount, chain}) {
     if (chain) {
-      this.balance = Wallet.calculateBalance({
-        chain,
-        address: this.publicKey
-      })
+      this.updateBalance(chain)
     }
 
     if(amount > this.balance) {

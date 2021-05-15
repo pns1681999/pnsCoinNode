@@ -66,6 +66,4 @@ class Transaction {
   }
 }
 
-module.exports = Transaction
-
-//6.13 3:00
+module.exports = Transaction;

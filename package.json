@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "npm run start-redis && nodemon index.js",
-    "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon index.js",
-    "start-redis": "redis-server --daemonize yes"
+    "start": "npm run build-client & node index.js",
+    "dev": "npm run dev-client & npm run start-redis && cross-env ENV='development' nodemon index.js",
+    "dev-peer": "cross-env GENERATE_PEER_PORT='true' ENV='development' nodemon index.js",
+    "start-redis": "redis-server --daemonize yes",
+    "build-client": "npm run clean && parcel build client/src/index.html --out-dir client/dist",
+    "dev-client": "npm run clean && parcel client/src/index.html --out-dir client/dist",
+    "clean": "rm -rf .cache client/dist"
   },
   "repository": {
     "type": "git",
@@ -22,11 +25,21 @@
   },
   "homepage": "https://github.com/pns1681999/pnsCoinNode#readme",
   "dependencies": {
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.1",
+    "@babel/preset-react": "^7.13.13",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "elliptic": "^6.5.4",
     "express": "^4.17.1",
     "hex-to-binary": "^1.0.1",
+    "history": "^4.10.1",
+    "parcel-bundler": "^1.12.5",
     "pubnub": "^4.32.0",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.6.0",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
     "redis": "^3.1.2",
     "request": "^2.88.2",
     "uuid": "^3.4.0"
