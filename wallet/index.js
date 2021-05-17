@@ -1,12 +1,12 @@
 const Transaction = require('./transaction')
-const {STARTING_BALANCE} = require('../config');
+const {DEFAULT_COIN} = require('../config');
 const {ec, cryptoHash} = require('../util');
 
 class Wallet {
   constructor(keyPair) {
     this.keyPair = keyPair || ec.genKeyPair();
     this.publicKey = this.keyPair.getPublic().encode('hex');
-    this.balance = STARTING_BALANCE;
+    this.balance = DEFAULT_COIN;
   }
   sign(data) {
     return this.keyPair.sign(cryptoHash(data))
@@ -51,7 +51,7 @@ class Wallet {
         break;
       }
     }
-    return hasConductedTransaction ? outputsTotal : STARTING_BALANCE + outputsTotal;
+    return hasConductedTransaction ? outputsTotal : DEFAULT_COIN + outputsTotal;
   }
 }
 

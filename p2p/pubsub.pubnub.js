@@ -1,4 +1,5 @@
-const PubNub = require('pubnub')
+const PubNub = require('pubnub');
+
 const credentials = {
   publishKey: 'pub-c-15d618ae-1e33-4597-ae54-82fa7d180256',
   subscribeKey: 'sub-c-c719e1c0-aee0-11eb-aad1-021b9ca2091c',
@@ -27,7 +28,7 @@ class PubSub {
   broadcastChain() {
     this.publish({
       channel: CHANNELS.BLOCKCHAIN,
-      message: JSON.stringify(this.blockchain.chain)
+      message: JSON.stringify(this.blockchain.chain),
     });
   }
 
@@ -48,24 +49,24 @@ class PubSub {
     return {
       message: messageObject => {
         const { channel, message } = messageObject;
-
         console.log(`Message received. Channel: ${channel}. Message: ${message}`);
         const parsedMessage = JSON.parse(message);
 
         switch(channel) {
           case CHANNELS.BLOCKCHAIN:
             this.blockchain.replaceChain(parsedMessage, true, () => {
+              console.log('success')
               this.transactionPool.clearBlockchainTransactions(
-                { chain: parsedMessage.chain }
+                { chain: parsedMessage }
               );
             });
             break;
           case CHANNELS.TRANSACTION:
-            if (!this.transactionPool.existingTransaction({
-              inputAddress: this.wallet.publicKey
-            })) {
+            // if (!this.transactionPool.existingTransaction({
+            //   inputAddress: this.wallet.publicKey
+            // })) {
               this.transactionPool.setTransaction(parsedMessage);
-            }
+            // }
             break;
           default:
             return;
@@ -75,7 +76,10 @@ class PubSub {
   }
 
   publish({ channel, message }) {
-    this.pubnub.publish({ message, channel });
+    // there is an unsubscribe function in pubnub
+    // but it doesn't have a callback that fires after success
+    // therefore, redundant publishes to the same local subscriber will be accepted as noisy no-ops
+    this.pubnub.publish({ message, channel}); 
   }
 
   broadcastChain() {
@@ -92,5 +96,6 @@ class PubSub {
     });
   }
 }
+
 
 module.exports = PubSub;

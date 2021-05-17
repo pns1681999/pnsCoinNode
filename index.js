@@ -1,13 +1,15 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-var cors = require('cors');
+const cors = require('cors');
 const request = require('request');
 const path = require('path');
 const Blockchain = require('./blockchain');
-const PubSub = require('./app/pubsub');
+const PubSub = require('./p2p/pubsub');
+// const PubSub = require('./p2p/pubsub.pubnub');
+
 const TransactionPool = require('./wallet/transaction-pool');
 const Wallet = require('./wallet')
-const TransactionMiner = require('./app/transaction-miner')
+const TransactionMiner = require('./wallet/transaction-miner')
 const {ec} = require('./util')
 
 
@@ -27,6 +29,7 @@ const blockchain = new Blockchain();
 const transactionPool = new TransactionPool();
 const wallet = new Wallet();
 const pubsub = new PubSub({blockchain, transactionPool, redisUrl: REDIS_URL });
+// const pubsub = new PubSub({blockchain, transactionPool, wallet });
 const transactionMiner = new TransactionMiner({blockchain, transactionPool, wallet, pubsub});
 
 app.use(cors());
@@ -79,7 +82,6 @@ app.post('/api/transact', (req, res)=>{
     const key = ec.keyPair(keyPair)
     senderWallet = new Wallet(key);
     senderWallet.balance = Wallet.calculateBalance({chain: blockchain.chain, address: senderWallet.publicKey})
-    console.log(senderWallet)
   } else {
     senderWallet = wallet
   }
@@ -137,7 +139,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/dist/index.html'));
 });
 
-const syncWithRootState = () => {
+const syncState = () => {
   request({url: `${ROOT_NODE_ADDRESS}/api/blocks`}, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const rootChain = JSON.parse(body);
@@ -165,6 +167,9 @@ const PORT = process.env.PORT || PEER || DEFAULT_PORT;
 app.listen(PORT, () => {
   console.log(`Run a at localhost:${PORT}`);
   if (PORT !== DEFAULT_PORT) {
-    syncWithRootState();
+    syncState();
   }
 });
+
+//Pns1681999@
+//lit-wave-55253

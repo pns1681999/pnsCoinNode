@@ -1,5 +1,5 @@
 const hexToBinary = require('hex-to-binary')
-const { GENESIS_DATA, MINE_RATE }  = require('../config')
+const { GENESIS, MINE_RATE }  = require('../config')
 const {cryptoHash} = require('../util')
 class Block {
     constructor({timestamp, lastHash, hash, data, nonce, difficulty}) {
@@ -11,11 +11,10 @@ class Block {
         this.difficulty = difficulty;
     }
     static genesis() {
-        return new this(GENESIS_DATA);
+        return new this(GENESIS);
     }
     static mineBlock({lastBlock, data}) {
         let hash, timestamp;
-        // const timestamp = Date.now();
         const lastHash = lastBlock.hash;
         let {difficulty} = lastBlock;
         let nonce = 0;

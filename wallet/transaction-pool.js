@@ -25,6 +25,7 @@ class TransactionPool {
     )
   }
   clearBlockchainTransactions({chain}) {
+    console.log('Clear', chain)
     for (let i=1; i<chain.length; i++) {
       const block = chain[i];
 

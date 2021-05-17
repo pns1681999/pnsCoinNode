@@ -1,25 +1,23 @@
-const MINE_RATE = 1000;
-const INITIAL_DIFFICULTY = 3;
-const GENESIS_DATA = {
+const DEFAULT_DIFFICULTY = 3;
+const GENESIS = {
   timestamp: 1,
   lastHash: 'pns-coin-hash',
   hash: 'genesis-hash',
-  difficulty: INITIAL_DIFFICULTY,
+  difficulty: DEFAULT_DIFFICULTY,
   nonce: 0,
   data: []
 }
-
-const STARTING_BALANCE = 1000;
-
-const REWARD_INPUT = {
-  address: '*authorized-reward*'
+const DEFAULT_COIN = 200;
+const MINE_RATE = 2000;
+const REWARD_TXIN = {
+  address: '<<PNS Coin System>>'
 };
 
-const MINING_REWARD = 50;
+const MINING_REWARD = 10;
 module.exports = {
-  GENESIS_DATA,
+  GENESIS,
   MINE_RATE,
-  STARTING_BALANCE,
-  REWARD_INPUT,
+  DEFAULT_COIN,
+  REWARD_TXIN,
   MINING_REWARD
 };

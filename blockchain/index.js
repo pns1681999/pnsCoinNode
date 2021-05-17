@@ -2,7 +2,7 @@ const Block = require('./block');
 const Transaction = require('../wallet/transaction');
 const Wallet = require('../wallet');
 const {cryptoHash} = require('../util');
-const { REWARD_INPUT, MINING_REWARD } = require('../config'); 
+const { REWARD_TXIN, MINING_REWARD } = require('../config'); 
 class Blockchain {
   constructor() {
     this.chain = [Block.genesis()]
@@ -43,7 +43,7 @@ class Blockchain {
       let rewardTransactionCount = 0;
 
       for (let transaction of block.data) {
-        if (transaction.input.address === REWARD_INPUT.address) {
+        if (transaction.input.address === REWARD_TXIN.address) {
           rewardTransactionCount += 1;
 
           if (rewardTransactionCount > 1) {
@@ -60,13 +60,14 @@ class Blockchain {
             console.error('Miner reward amount is invalid');
             return false;
           }
-
+          const chainNow = chain.slice(0, i)
           const trueBalance = Wallet.calculateBalance({
-            chain: this.chain,
+            chain: chainNow,
             address: transaction.input.address
           });
-
           if (transaction.input.amount !== trueBalance) {
+            console.log(transaction)
+            console.log(trueBalance)
             console.error('Invalid input amount');
             return false
           }
